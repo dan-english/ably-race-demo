@@ -1,0 +1,70 @@
+#main_page,
+#dashboard_page,
+#debug_page,
+#rewind_page,
+#history_page,
+#docs_page {
+  margin: 0px !important;
+}
+
+#dashboard-app,
+#docs-app,
+#debug-app,
+#history-app,
+#rewind-app,
+#app {
+  margin: 0px !important;
+
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+#h1 {
+  font-size: 20px;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* menu on left, flag on right */
+  transition: border-color 0.25s ease-in-out;
+  border-bottom: 2px solid transparent;
+}
+
+pre {
+  background: #2d2d2d;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+code {
+  font-family: "Fira Code", "Consolas", "Monaco", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+:deep(.el-table__body tr.current-row > td) {
+  background-color: #409eff !important;
+  color: white;
+}
+
+pre[class*="language-"] {
+  font-size: 12px;
+}
+
+.channel_name {
+  font-weight: bold;
+  color: red;
+  font-style: italic;
+}
+
+.event_name {
+  color: #7ec699;
+  font-style: italic;
+  font-weight: bold;
+}
