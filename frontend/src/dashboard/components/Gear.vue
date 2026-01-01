@@ -98,6 +98,7 @@ export default {
       this.$telemetry_ably_event
     ) {
       this.subscribeToTelemetry();
+      this.subscribeToTelemetry_bobxbox_event();
     }
   },
   computed: {
@@ -124,14 +125,27 @@ export default {
           this.activeGear = data.gear;
         }
 
-        // Update pit status
-        this.inPit = !!data.in_pit;
         this.flag = data.flag;
       });
 
       this.$debug.ably_subscribed(
         this.$default_ably_channel,
         this.$telemetry_ably_event,
+        this.$options.name
+      );
+    },
+
+    subscribeToTelemetry_bobxbox_event() {
+      const channel = this.$ably.channels.get(this.$default_ably_channel);
+      channel.subscribe("boxbox_status", (message) => {
+        const data = message.data;
+        // Update pit status
+        this.inPit = !!data.in_pit;
+      });
+
+      this.$debug.ably_subscribed(
+        this.$default_ably_channel,
+        "boxbox_status",
         this.$options.name
       );
     },
