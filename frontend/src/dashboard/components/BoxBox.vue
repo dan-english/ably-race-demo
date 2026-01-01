@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-if="should_box">Box Box This Lap - {{ reason }}</h1>
+    <h1 v-if="should_box">Box Box This Lap {{ "- " + reason }}</h1>
     <h1 v-if="in_pit">In Pit</h1>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default {
 
       channel.subscribe(this.$boxbox_status_ably_event, (message) => {
         this.should_box = message.data.boxbox;
+
         this.reason = message.data.reason;
         this.in_pit = message.data.in_pit;
       });
