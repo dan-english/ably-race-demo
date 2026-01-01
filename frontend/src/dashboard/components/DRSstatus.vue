@@ -79,7 +79,7 @@ export default {
       channel.subscribe(this.$telemetry_ably_event, (message) => {
         this.drs_enabled = message.data.drs || false;
 
-        // this.$debug.info(`DRS: ${this.drs_enabled}`);
+        this.$debug.info(`DRS: ${this.drs_enabled}`);
       });
 
       this.$debug.ably_subscribed(

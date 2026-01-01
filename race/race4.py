@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 import time, random, os, sys, asyncio
 
-from ably import AblyRealtime
+from ably import AblyRealtime, AblyVCDiffDecoder
+from ably.realtime.realtime_channel import ChannelOptions
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -254,11 +255,16 @@ async def run_race():
     print("Telemetry: Lap | Section | Speed | Gear | DRS | Flag | PIT | Tyre Wear | Fuel (kg)\n")
 
     ## Ably
-    ably = AblyRealtime(API_KEY)
+    ably = AblyRealtime(API_KEY, vcdiff_decoder=AblyVCDiffDecoder())
     channel = ably.channels.get(CHANNEL_NAME)
 
     lap_channel = ably.channels.get(RACE_LAP_CHANNEL_NAME)
     flag_channel = ably.channels.get(RACE_FLAG_CHANNEL_NAME)
+
+    #@todo implement delta processing to reduce the amount of noise being pushed to the client app
+    drs_channel = ably.channels.get("drs-status", ChannelOptions(params={
+    'delta': 'vcdiff'
+    }))
 
     speed = 0.0
     fuel = START_FUEL
@@ -543,6 +549,7 @@ async def run_race():
                     speed += random.uniform(-1.0, 1.0)
 
                 drs = drs_zone and speed > 150 and flag == "GREEN" and not in_pit
+                await drs_channel.publish( "drs_status", {"drs_enabled": drs})
                 if drs:
                     target += 12
 
@@ -636,7 +643,6 @@ async def run_race():
                     end=""
                 )
                 print(f" | {ot_text}" if ot_text else "")
-
 
 
                 # Fans cheering every 30s
