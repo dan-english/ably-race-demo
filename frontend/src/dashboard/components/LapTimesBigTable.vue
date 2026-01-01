@@ -27,7 +27,7 @@
     </div>
     <p>(rewind 20 messages)</p>
 
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%" height="750">
       <el-table-column prop="lap" label="Lap" width="70px" />
       <el-table-column prop="position" label="Position" width="100px" />
       <el-table-column prop="lap_time_sec" label="Lap Time (sec)" />

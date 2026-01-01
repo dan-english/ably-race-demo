@@ -2,7 +2,7 @@
   <div class="laptimes">
     <h3>Lap Times</h3>
 
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%" height="350">
       <el-table-column prop="lap" label="Lap" width="70px" />
       <el-table-column
         prop="position"

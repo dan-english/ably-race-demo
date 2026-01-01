@@ -27,7 +27,7 @@
     </div>
     <p>(rewind 100 seconds)</p>
 
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%" height="750">
       <el-table-column prop="lap" label="Lap" width="70px" v-if="show_extra" />
       <el-table-column prop="sector" label="Sector" />
       <el-table-column prop="sector_time_sec" label="Sector Time (sec)" />

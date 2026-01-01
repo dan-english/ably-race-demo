@@ -29,7 +29,7 @@
   </div>
 
   <div class="sectortimes">
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%" height="350">
       <el-table-column prop="lap" label="Lap" width="50px" v-if="show_extra" />
       <el-table-column prop="sector" label="Sector" />
       <el-table-column prop="sector_time_sec" label="Sector Time (sec)" />

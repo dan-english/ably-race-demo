@@ -1,6 +1,6 @@
 <template>
   <div class="race_data_table">
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%" height="750">
       <el-table-column prop="lap" label="Lap" width="70" />
       <el-table-column prop="position" label="Position" width="90" />
       <el-table-column prop="section" label="Section" />
