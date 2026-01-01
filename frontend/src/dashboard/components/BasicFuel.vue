@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       chartFuelLoad: null,
-      chartTyre: null,
+
       telemetryLoaded: false,
     };
   },
@@ -32,7 +32,6 @@ export default {
 
   beforeUnmount() {
     if (this.chartFuelLoad) this.chartFuelLoad.destroy();
-    if (this.chartTyre) this.chartTyre.destroy();
   },
 
   methods: {

@@ -90,4 +90,4 @@ registerLocalComponents(app);
 registerGlobalComponents(app);
 registerAblyConfig(app);
 
-app.mount("#dashboard-app");
+app.mount("#dashboard_app");

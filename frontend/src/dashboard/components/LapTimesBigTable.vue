@@ -3,8 +3,8 @@
     <h3>Lap Times</h3>
 
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="lap" label="Lap" width="50px" />
-      <el-table-column prop="position" label="Position" width="80px" />
+      <el-table-column prop="lap" label="Lap" width="70px" />
+      <el-table-column prop="position" label="Position" width="100px" />
       <el-table-column prop="lap_time_sec" label="Lap Time (sec)" />
       <el-table-column prop="best_lap_sec" label="Best Lap" />
     </el-table>

@@ -3,7 +3,7 @@
     <h3>Sector Times</h3>
 
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="lap" label="Lap" width="50px" v-if="show_extra" />
+      <el-table-column prop="lap" label="Lap" width="70px" v-if="show_extra" />
       <el-table-column prop="sector" label="Sector" />
       <el-table-column prop="sector_time_sec" label="Sector Time (sec)" />
       <el-table-column

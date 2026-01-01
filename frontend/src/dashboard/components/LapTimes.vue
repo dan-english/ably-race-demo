@@ -3,7 +3,7 @@
     <h3>Lap Times</h3>
 
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="lap" label="Lap" width="50px" />
+      <el-table-column prop="lap" label="Lap" width="70px" />
       <el-table-column
         prop="position"
         label="Position"
@@ -33,10 +33,6 @@ export default {
     if (this.show_extra_columns) {
       this.show_extra = true;
     }
-    // if (this.custom_rewind) {
-    //   this.rewind_count = this.custom_rewind;
-    //   console.log("custom rewind to:" + this.custom_rewind);
-    // }
 
     if (this.$ably && this.$race_lap_ably_channel && this.$laptime_ably_event) {
       this.subscribeToTelemetry();

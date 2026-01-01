@@ -7,7 +7,6 @@
       r="95"
       :fill="inPit ? '#FFD700' : '#222'"
       :stroke="outerCircleStrokeColor"
-      ,
       stroke-width="4"
     ></circle>
 
