@@ -1,10 +1,10 @@
 <template>
   <div class="race_data_table">
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="lap" label="Lap" />
-      <el-table-column prop="position" label="Position" />
+      <el-table-column prop="lap" label="Lap" width="70" />
+      <el-table-column prop="position" label="Position" width="90" />
       <el-table-column prop="section" label="Section" />
-      <el-table-column prop="speed_kmh" label="Speed (km/h)" />
+      <el-table-column prop="speed_kmh" label="Speed (km/h)" width="90" />
       <el-table-column prop="gear" label="Gear" width="60" />
 
       <!-- DRS column with color -->

@@ -1,4 +1,22 @@
 module.exports = {
+  devServer: {
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+        runtimeErrors: (error) => {
+          const ignoreErrors = [
+            "ResizeObserver loop completed with undelivered notifications.",
+            "ResizeObserver loop limit exceeded",
+          ];
+          if (ignoreErrors.includes(error.message)) {
+            return false;
+          }
+          return true;
+        },
+      },
+    },
+  },
   pages: {
     index: {
       entry: "src/main.js", // main app
