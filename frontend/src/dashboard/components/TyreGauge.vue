@@ -1,8 +1,36 @@
 <template>
-  <div class="tyre-gauges">
-    <div v-for="tyre in tyreOrder" :key="tyre" class="tyre-gauge-container">
-      <div :id="'container-' + tyre" class="chart-container"></div>
-      <div class="tyre-label">{{ tyre }}</div>
+  <div class="">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div style="flex: 1"></div>
+      <h3 style="margin: 0; flex: 1; text-align: center">Tyre Degradation</h3>
+      <div style="flex: 1; display: flex; justify-content: flex-end">
+        <div
+          style="
+            padding: 4px 12px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 11px;
+          "
+        >
+          {{ $default_ably_channel }} <br />
+          {{ $telemetry_ably_event }}
+        </div>
+      </div>
+    </div>
+
+    <div class="tyre-gauges">
+      <div v-for="tyre in tyreOrder" :key="tyre" class="tyre-gauge-container">
+        <div :id="'container-' + tyre" class="chart-container"></div>
+        <div class="tyre-label">{{ tyre }}</div>
+      </div>
     </div>
   </div>
 </template>

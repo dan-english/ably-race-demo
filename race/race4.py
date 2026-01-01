@@ -513,7 +513,7 @@ async def run_race():
         # Pit Logic End #
 
 
-            #a stepp witll be 200ms so we can publish telemetry data in realtime
+            #a step witll be 200ms so we can publish telemetry data in realtime
             steps = int(duration / TIME_STEP)
 
             for _ in range(steps):

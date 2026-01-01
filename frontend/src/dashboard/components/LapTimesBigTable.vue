@@ -1,6 +1,31 @@
 <template>
   <div class="laptimes">
-    <h3>Lap Times</h3>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div style="flex: 1"></div>
+      <h3 style="margin: 0; flex: 1; text-align: center">Lap Times</h3>
+      <div style="flex: 1; display: flex; justify-content: flex-end">
+        <div
+          style="
+            padding: 4px 12px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 11px;
+          "
+        >
+          {{ $race_lap_ably_channel }} <br />
+          {{ $laptime_ably_event }}
+        </div>
+      </div>
+    </div>
+    <p>(rewind 20 messages)</p>
 
     <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column prop="lap" label="Lap" width="70px" />
@@ -60,3 +85,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+h3 {
+  margin-bottom: 0px;
+}
+p {
+  margin: 2px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #696969;
+  font-size: 12px;
+  font-style: italic;
+  color: #696969;
+}
+</style>

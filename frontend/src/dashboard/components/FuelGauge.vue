@@ -1,7 +1,35 @@
 <template>
-  <figure class="highcharts-figure">
-    <div ref="chartContainer" id="container"></div>
-  </figure>
+  <div class="fuelguage">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div style="flex: 1"></div>
+      <h3 style="margin: 0; flex: 1; text-align: center">Fuel Level</h3>
+      <div style="flex: 1; display: flex; justify-content: flex-end">
+        <div
+          style="
+            padding: 4px 12px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 11px;
+          "
+        >
+          {{ $default_ably_channel }} <br />
+          {{ $telemetry_ably_event }}
+        </div>
+      </div>
+    </div>
+
+    <figure class="highcharts-figure">
+      <div ref="chartContainer" id="container"></div>
+    </figure>
+  </div>
 </template>
 
 <script>
@@ -29,7 +57,7 @@ export default {
         height: "80%",
       },
 
-      title: { text: "Fuel Level" },
+      title: { text: undefined },
 
       pane: {
         startAngle: -90,

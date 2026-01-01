@@ -22,9 +22,8 @@
             <RaceDataTable></RaceDataTable>
           </el-tab-pane>
           <el-tab-pane label="Tyres" name="tyres">
-            <div class="fuel-tyres-wrapper">
-              <TyreGauge></TyreGauge>
-            </div>
+            <TyreGauge></TyreGauge>
+
             <div class="gear-wrapper">
               <TyreDeg></TyreDeg>
             </div>
@@ -33,12 +32,12 @@
             <FuelGauge></FuelGauge>
           </el-tab-pane>
 
-          <el-tab-pane label="Sectors" name="sectortimes">
-            <SectorTimesBigTable></SectorTimesBigTable>
-          </el-tab-pane>
-
           <el-tab-pane label="Laps" name="laptimes">
             <LapTimesBigTable></LapTimesBigTable>
+          </el-tab-pane>
+
+          <el-tab-pane label="Sectors" name="sectortimes">
+            <SectorTimesBigTable></SectorTimesBigTable>
           </el-tab-pane>
         </el-tabs>
       </el-main>

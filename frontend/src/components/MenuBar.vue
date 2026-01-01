@@ -10,14 +10,14 @@
       <el-menu-item index="2">Dashboard</el-menu-item>
       <el-menu-item index="3">Rewind</el-menu-item>
       <el-menu-item index="6">History</el-menu-item>
-      <el-menu-item index="4" :disabled="debugTabDisabled">Race</el-menu-item>
+      <el-menu-item index="4" disabled>Race</el-menu-item>
       <el-menu-item index="5">Docs</el-menu-item>
     </el-menu>
 
     <div class="flag-wrapper">
-      <DRSstatus></DRSstatus>
-      <PitStatus></PitStatus>
-      <RaceFlag @flag-change="onFlagChange"></RaceFlag>
+      <DRSstatus v-if="!hide_drs"></DRSstatus>
+      <PitStatus v-if="!hide_pit"></PitStatus>
+      <RaceFlag v-if="!hide_flag" @flag-change="onFlagChange"></RaceFlag>
     </div>
   </div>
 </template>
@@ -25,11 +25,11 @@
 <script>
 export default {
   name: "MenuBar",
-  props: ["active_page"],
+  props: ["active_page", "hide_flag", "hide_drs", "hide_pit"],
 
   data() {
     return {
-      activeIndex: 1,
+      activeIndex: "1",
       currentFlag: "grey",
       debugTabDisabled: true,
       routes: {
@@ -47,15 +47,15 @@ export default {
     this.$debug.info("Menu Component");
 
     if (this.active_page == "docs") {
-      this.activeIndex = 5;
+      this.activeIndex = "5";
     } else if (this.active_page == "rewind") {
-      this.activeIndex = 3;
+      this.activeIndex = "3";
     } else if (this.active_page == "dashboard") {
-      this.activeIndex = 2;
+      this.activeIndex = "2";
     } else if (this.active_page == "debug") {
-      this.activeIndex = 4;
+      this.activeIndex = "4";
     } else if (this.active_page == "history") {
-      this.activeIndex = 6;
+      this.activeIndex = "6";
     }
 
     this.debugTabDisabled = this.$debug_tab_disabled;

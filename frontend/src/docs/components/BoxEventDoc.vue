@@ -58,11 +58,11 @@ await channel.publish(
     if (this.hide_desc) {
       this.hide = this.hide_desc;
     }
-    // Highlight the code block
-    if (this.$refs.codeEl) {
-      this.$Prism.highlightElement(this.$refs.codeEl);
-      this.$Prism.highlightElement(this.$refs.codeE2);
-    }
+    Object.keys(this.$refs).forEach((refKey) => {
+      if (refKey.startsWith("code") && this.$refs[refKey]) {
+        this.$Prism.highlightElement(this.$refs[refKey]);
+      }
+    });
   },
 
   methods: {},

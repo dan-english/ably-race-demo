@@ -1,5 +1,10 @@
 <template>
-  <MenuBar active_page="docs"></MenuBar>
+  <MenuBar
+    active_page="docs"
+    hide_flag="true"
+    hide_drs="true"
+    hide_pit="true"
+  ></MenuBar>
 
   <div class="common-layout">
     <el-container class="layout">

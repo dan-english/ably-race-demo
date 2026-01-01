@@ -35,6 +35,7 @@ export default {
       historyEvents: [],
 
       lapTimeHistoryData: undefined,
+      flagStatusHistoryData: undefined,
 
       filter_options: [
         {
@@ -74,6 +75,7 @@ export default {
     this.$debug.info("Ably History Data");
     this.loadLargeHistory();
     this.loadLaptimeHistory();
+    this.loadFlagStatusHistory();
   },
 
   methods: {
@@ -82,6 +84,10 @@ export default {
 
       if (event_name == "lap_time") {
         this.historyEvents = this.lapTimeHistoryData.filter(
+          ({ name }) => name === event_name
+        );
+      } else if (event_name == "flag_status") {
+        this.historyEvents = this.flagStatusHistoryData.filter(
           ({ name }) => name === event_name
         );
       } else {
@@ -109,7 +115,7 @@ export default {
         direction: "backwards",
       });
 
-      while (page.items.length && all.length < 1000) {
+      while (page.items.length && all.length < 200) {
         all.push(...page.items);
         if (!page.hasNext()) break;
         page = await page.next();
@@ -121,20 +127,36 @@ export default {
     },
 
     async loadLaptimeHistory() {
-      this.$debug.log("Loading large history");
+      this.$debug.log("Loading Laptime history");
 
       const channel = this.$ably.channels.get(this.$race_lap_ably_channel);
 
       let all = [];
       let page = await channel.history();
 
-      while (page.items.length && all.length < 1000) {
+      while (page.items.length && all.length < 200) {
         all.push(...page.items);
         if (!page.hasNext()) break;
         page = await page.next();
       }
 
       this.lapTimeHistoryData = all;
+    },
+
+    async loadFlagStatusHistory() {
+      this.$debug.log("Loading Flag Status history");
+
+      const channel = this.$ably.channels.get(this.$race_flag_ably_channel);
+
+      let all = [];
+      let page = await channel.history();
+
+      while (page.items.length && all.length < 200) {
+        all.push(...page.items);
+        if (!page.hasNext()) break;
+        page = await page.next();
+      }
+      this.flagStatusHistoryData = all;
     },
   },
 };

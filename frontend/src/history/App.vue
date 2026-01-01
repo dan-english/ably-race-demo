@@ -1,5 +1,10 @@
 <template>
-  <MenuBar active_page="history"></MenuBar>
+  <MenuBar
+    active_page="history"
+    hide_flag="true"
+    hide_drs="true"
+    hide_pit="true"
+  ></MenuBar>
 
   <div class="common-layout">
     <el-container class="layout">
@@ -83,8 +88,6 @@ export default {
     },
 
     filter_changed(new_filter) {
-      console.log("docs frame shoudl show: " + new_filter);
-
       const stateMap = {
         sector_time: "sectoreventdoc",
         lap_time: "lapeventdoc",
@@ -92,6 +95,7 @@ export default {
         flag_status: "flageventdoc",
         telemetry: "telemetrydoc",
       };
+
       // Reset all flags
       for (const key of Object.values(stateMap)) {
         this[key] = false;

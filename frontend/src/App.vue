@@ -1,5 +1,10 @@
 <template>
-  <MenuBar :active-page="home"></MenuBar>
+  <MenuBar
+    active-page="home"
+    hide_flag="true"
+    hide_drs="true"
+    hide_pit="true"
+  ></MenuBar>
   <h1>Ably Racing Demonstration</h1>
 </template>
 

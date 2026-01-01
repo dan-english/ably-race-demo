@@ -1,12 +1,40 @@
 <template>
   <div class="sectortimes">
-    <h3>
-      Sector Times with Rewind
-      <el-button size="small" type="primary" @click="start_listening"
-        >Go</el-button
-      >
-    </h3>
-    <sub><b>30 second rewind</b></sub>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      "
+    >
+      <div style="flex: 1"></div>
+      <h3 style="margin: 0; flex: 2; text-align: center">
+        Sector Times with 30 Second Rewind
+
+        <el-button size="small" type="primary" @click="start_listening"
+          >Go</el-button
+        >
+      </h3>
+
+      <div style="flex: 1; display: flex; justify-content: flex-end">
+        <div
+          style="
+            padding: 4px 12px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 11px;
+          "
+        >
+          {{ $default_ably_channel }} <br />
+          {{ $telemetry_ably_event }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sectortimes">
     <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column prop="lap" label="Lap" width="50px" />
       <el-table-column prop="sector" label="Sector" />
@@ -72,9 +100,18 @@ export default {
 </script>
 <style scoped>
 .sectortimes {
-  margin: 21px;
+  margin: 14px;
 }
+
 h3 {
-  margin-bottom: 13px;
+  margin-bottom: 0px;
+}
+p {
+  margin: 2px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #696969;
+  font-size: 12px;
+  font-style: italic;
+  color: #696969;
 }
 </style>
