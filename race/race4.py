@@ -331,8 +331,8 @@ async def run_race():
             current_sector_index = TRACK_LAYOUT.index((section, base_speed, duration, drs_zone))
 
             if pit_this_lap and current_sector_index == pit_sector_index - 1 and not approaching_pit_published:
-                pit_message = f"{CYAN}--- APPROACHING PIT ENTRY ---{RESET}"
-                await channel.publish("boxbox_status", {"boxbox": True, "in_pit": False, "approaching_pit": True})
+                pit_message = pit_message  + " (on approach)"
+                await channel.publish("boxbox_status", {"boxbox": True, "in_pit": False, "approaching_pit": True, "reason":pit_message})
                 approaching_pit_published = True  # ensure only once
 
 
