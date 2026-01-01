@@ -6,6 +6,8 @@
     viewBox="0 0 120 120"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>{{ flagText }}</title>
+
     <!-- Flag pole -->
     <rect x="0" y="0" width="10" height="120" fill="#333" />
 
@@ -34,6 +36,7 @@ export default {
   data() {
     return {
       currentFlag: "transparent",
+
       racing: false,
       // Base flag path (used for initial display)
       flagPath: "M10 10 Q50 20 100 10 T190 10 L190 70 Q100 80 10 70 Z",
@@ -57,28 +60,46 @@ export default {
       this.subscribeToTelemetry();
     }
   },
+  computed: {
+    flagText() {
+      // Map flag types to text labels
+      const textMap = {
+        green: "GoGoGo",
+        yellow: "YELLOW",
+        safetycar: "SC",
+        vsc: "VSC",
+        red: "RED",
+        blue: "BLUE",
+        black: "BLACK",
+        chequered: "FINISH",
+      };
+      return textMap[this.currentFlag] || "";
+    },
+  },
 
   methods: {
     subscribeToTelemetry() {
-      const channel = this.$ably.channels.get(this.$default_ably_channel);
+      const channel = this.$ably.channels.get(this.$race_flag_ably_channel, {
+        params: { rewind: 1 },
+      });
 
       channel.subscribe(this.$flag_status_ably_event, (message) => {
         if (!this.racing) this.racing = true;
 
-        let flag = message.data.flag?.toLowerCase().replace(/\s+/g, ""); // normalize string
-        // Attempt direct match with global flagColors keys
+        let flag = message.data.flag?.toLowerCase().replace(/\s+/g, "");
+
         const normalizedKey = Object.keys(this.$flagColors).find(
           (key) => key.replace(/\s+/g, "").toLowerCase() === flag
         );
 
-        this.currentFlag = normalizedKey || "grey"; // fallback if unknown
+        this.currentFlag = normalizedKey || "grey";
         this.$debug.flag(this.currentFlag);
 
         this.$emit("flag-change", this.currentFlag);
       });
 
       this.$debug.ably_subscribed(
-        this.$default_ably_channel,
+        this.$race_flag_ably_channel,
         this.$flag_status_ably_event,
         this.$options.name
       );

@@ -15,6 +15,7 @@
     </el-menu>
 
     <div class="flag-wrapper">
+      <DRSstatus></DRSstatus>
       <PitStatus></PitStatus>
       <RaceFlag @flag-change="onFlagChange"></RaceFlag>
     </div>

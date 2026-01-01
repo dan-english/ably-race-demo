@@ -26,6 +26,9 @@ export function registerAblyConfig(app) {
   app.config.globalProperties.$race_lap_ably_channel =
     process.env.VUE_APP_RACE_LAP_ABLY_CHANNEL;
 
+  app.config.globalProperties.$race_flag_ably_channel =
+    process.env.VUE_APP_RACE_FLAG_ABLY_CHANNEL;
+
   app.config.globalProperties.$default_ably_weatherchannel =
     process.env.VUE_APP_ABLY_WEATHER_CHANNEL;
 

@@ -8,6 +8,7 @@ load_dotenv()
 API_KEY = os.getenv("ABLY_API_KEY")
 CHANNEL_NAME = os.getenv("CHANNEL_NAME")
 RACE_LAP_CHANNEL_NAME = os.getenv("RACE_LAP_ABLY_CHANNEL")
+RACE_FLAG_CHANNEL_NAME = os.getenv("RACE_FLAG_ABLY_CHANNEL")
 
 TOTAL_LAPS = os.getenv("NUMBER_OF_LAPS", 2)
 
@@ -257,6 +258,7 @@ async def run_race():
     channel = ably.channels.get(CHANNEL_NAME)
 
     lap_channel = ably.channels.get(RACE_LAP_CHANNEL_NAME)
+    flag_channel = ably.channels.get(RACE_FLAG_CHANNEL_NAME)
 
     speed = 0.0
     fuel = START_FUEL
@@ -306,6 +308,7 @@ async def run_race():
 
         prev_flag = None
         pit_this_lap = False
+        pit_message=''
         approaching_pit_published = False
 
 
@@ -326,15 +329,13 @@ async def run_race():
             # Determine if this sector is just before the pit entry
             pit_sector_index = [i for i, (s, _, _, _) in enumerate(TRACK_LAYOUT) if s == PIT_SECTION][0]
             current_sector_index = TRACK_LAYOUT.index((section, base_speed, duration, drs_zone))
-            pit_message=''
 
             if pit_this_lap and current_sector_index == pit_sector_index - 1 and not approaching_pit_published:
                 pit_message = f"{CYAN}--- APPROACHING PIT ENTRY ---{RESET}"
                 await channel.publish("boxbox_status", {"boxbox": True, "in_pit": False, "approaching_pit": True})
                 approaching_pit_published = True  # ensure only once
 
-            if in_pit:
-                pit_message = f"{CYAN}--- IN PIT ---{RESET}"
+
 
 
             # Retire car if out of fuel
@@ -421,7 +422,7 @@ async def run_race():
 
             # --- publish flag only on change ---
             if flag != prev_flag:
-                await channel.publish("flag_status", {"flag": flag})
+                await flag_channel.publish("flag_status", {"flag": flag})
                 prev_flag = flag
 
         # Safety Logic End #
@@ -450,9 +451,11 @@ async def run_race():
             if section_type(section) == "corner":
                 sector_time_modifier *= 1.05
 
-
         # Pit Logic Start #
             if in_pit:
+                    pit_message = f"{CYAN}--- IN PIT ---{RESET}"
+                    pit_this_lap = False
+
                     pit_total_time = random.uniform(18.0, 23.0)  # seconds for this lap's pit
                     sector_time_modifier += pit_total_time / base_sector_time  # scale to sector
 
@@ -476,6 +479,7 @@ async def run_race():
                 if not pit_this_lap:
                     if worst_tyre_wear(tyres) >= 45:
                         pit_this_lap = True
+                        pit_message = "Tyres"
                         in_pit = section == "Club"
                         print(f"{RED}--- Tyres critically worn ({tyre_wear:.1f}%) - forced pit ---{RESET}")
                         safety_factor = max(0.6, 1.0 - (tyre_wear - 60) / 20)
@@ -484,13 +488,21 @@ async def run_race():
 
                     if fuel <= 70.0:
                         pit_this_lap = True
+                        pit_message = "Fuel"
                         in_pit = section == "Club"
                         print(f"{RED}--- Fuel low ({fuel:.1f} kg) - forced pit ---{RESET}")
                         await channel.publish("boxbox_status", {"boxbox": True, "in_pit":False, "reason":"Fuel"})
 
-                    if safety_car_active and not pit_this_lap and random.random() < 0.8:
+                    # Undercut strategy: only pit if safety car is out AND we're close to pit entry
+                    # Check if we're within 2 sections of the pit lane (Club)
+                    sections_to_pit = (pit_sector_index - current_sector_index) % len(TRACK_LAYOUT)
+                    close_to_pit = sections_to_pit <= 2
+                    if safety_car_active and close_to_pit and not pit_this_lap and random.random() < 0.8:
                         pit_this_lap = True
+                        pit_message = "Undercut"
+                        print(f"{RED}--- Safety Car Undercut Strategy (SC active, {sections_to_pit} sections to pit) ---{RESET}")
                         await channel.publish("boxbox_status", {"boxbox": True, "in_pit":False, "reason":"Undercut"})
+
 
         # Pit Logic End #
 
@@ -542,14 +554,20 @@ async def run_race():
                     if position > 1 and overtake(speed, drs, section):
                         position -= 1
                         ot_text = f"💨 OVERTAKE! Now in position {position}"
+                        await channel.publish("overtake_status", {"status": "over take", "position": position})
+
                     elif position < TOTAL_DRIVERS and be_overtaken(speed, drs, section):
                         position += 1
                         ot_text = f"⬇️ OVERTAKEN! Now in position {position}"
+                        await channel.publish("overtake_status", {"status": "passed", "position": position})
+
                 # --- Pit overtakes ---
                 else:
                     if position < TOTAL_DRIVERS and random.random() < 0.15:  # 15% chance per step
                         position += 1
                         ot_text = f"⬇️ OVERTAKEN IN PIT! Now in position {position}"
+                        await channel.publish("overtake_status", {"status": "passed in pits", "position": position})
+
 
                 # --- Update timers ---
                 time_per_step = actual_sector_time / steps
@@ -613,12 +631,12 @@ async def run_race():
                     f"Tyres: FL {tyres['FL']:.1f}% | FR {tyres['FR']:.1f}% | "
                     f"RL {tyres['RL']:.1f}% | RR {tyres['RR']:.1f}% | "
                     f"Pit This Lap: {YELLOW if pit_this_lap else ''}{pit_this_lap}{RESET if pit_this_lap else ''} | "
+                    f"Pit Msg: {YELLOW if pit_message else ''}{pit_message}{RESET if pit_this_lap else ''} | "
                     f"Fuel: {fuel:6.1f} kg",
                     end=""
                 )
-                print(f" | {ot_text}" if ot_text else "", end="")
+                print(f" | {ot_text}" if ot_text else "")
 
-                print(f" | {pit_message}" if pit_message else "")
 
 
                 # Fans cheering every 30s
