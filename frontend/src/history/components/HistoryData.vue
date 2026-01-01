@@ -96,12 +96,20 @@ export default {
         );
       }
 
-      // Initial highlight (optional)
-      this.$nextTick(() => {
-        this.$Prism.highlightElement(this.$refs.codeEl);
-      });
-
-      this.$emit("history_filter_changed", event_name);
+      if (this.historyEvents && this.historyEvents.length > 0) {
+        // Initial highlight (optional)
+        this.$nextTick(() => {
+          // Check if ref exists before highlighting
+          if (this.$refs.codeEl) {
+            this.$Prism.highlightElement(this.$refs.codeEl);
+          }
+        });
+        this.$emit("history_filter_changed", event_name);
+      } else {
+        console.log(
+          "No data, check persistence configuration in Ably dashboard"
+        );
+      }
     },
 
     async loadLargeHistory() {
