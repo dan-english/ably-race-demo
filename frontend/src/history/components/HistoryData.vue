@@ -147,23 +147,29 @@ export default {
         if (!page.hasNext()) break;
         page = await page.next();
       }
+      console.log(all);
 
       this.lapTimeHistoryData = all;
     },
 
     async loadFlagStatusHistory() {
-      this.$debug.log("Loading Flag Status history");
+      this.$debug.log(
+        `Loading Flag Status history ${this.$race_flag_ably_channel}`
+      );
 
-      const channel = this.$ably.channels.get(this.$race_flag_ably_channel);
+      const flag_channel = this.$ably.channels.get(
+        this.$race_flag_ably_channel
+      );
 
       let all = [];
-      let page = await channel.history();
+      let page = await flag_channel.history();
 
       while (page.items.length && all.length < 200) {
         all.push(...page.items);
         if (!page.hasNext()) break;
         page = await page.next();
       }
+      console.log(all);
       this.flagStatusHistoryData = all;
     },
   },

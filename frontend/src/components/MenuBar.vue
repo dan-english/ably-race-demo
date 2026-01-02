@@ -11,7 +11,7 @@
       <el-menu-item index="3">Rewind</el-menu-item>
       <el-menu-item index="6">History</el-menu-item>
       <el-menu-item index="4" disabled>Race</el-menu-item>
-      <el-menu-item index="5">Docs</el-menu-item>
+      <el-menu-item index="5">Examples</el-menu-item>
     </el-menu>
 
     <div class="flag-wrapper">
