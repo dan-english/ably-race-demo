@@ -80,7 +80,9 @@ export default {
 
   methods: {
     filterByEvent(event_name) {
+
       if (!Array.isArray(this.historyData)) return;
+
 
       if (event_name == "lap_time") {
         this.historyEvents = this.lapTimeHistoryData.filter(
@@ -119,19 +121,18 @@ export default {
 
       let all = [];
       let page = await channel.history({
-        limit: 110,
-        direction: "backwards",
+        limit: 10,
+        // direction: "backwards",
       });
 
-      while (page.items.length && all.length < 200) {
+      while (page.items.length && all.length < 20) {
         all.push(...page.items);
         if (!page.hasNext()) break;
         page = await page.next();
       }
 
       this.historyData = all;
-      this.loading = false;
-      this.loaded = true;
+
     },
 
     async loadLaptimeHistory() {
@@ -140,15 +141,13 @@ export default {
       const channel = this.$ably.channels.get(this.$race_lap_ably_channel);
 
       let all = [];
-      let page = await channel.history();
+      let page = await channel.history({ limit: 10 });
 
-      while (page.items.length && all.length < 200) {
+      while (page.items.length && all.length < 20) {
         all.push(...page.items);
         if (!page.hasNext()) break;
         page = await page.next();
       }
-      console.log(all);
-
       this.lapTimeHistoryData = all;
     },
 
@@ -162,15 +161,17 @@ export default {
       );
 
       let all = [];
-      let page = await flag_channel.history();
+      let page = await flag_channel.history({ limit: 10 });
 
-      while (page.items.length && all.length < 200) {
+      while (page.items.length && all.length < 20) {
         all.push(...page.items);
         if (!page.hasNext()) break;
         page = await page.next();
       }
-      console.log(all);
+      this.$debug.log(`Got History ${this.$race_flag_ably_channel}`);
       this.flagStatusHistoryData = all;
+      this.loading = false;
+      this.loaded = true;
     },
   },
 };
